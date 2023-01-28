@@ -1,9 +1,3 @@
-
-------------------
-Turn based RPG game
-Similar to octopath
-Art closer to an older zelda or final fantasy game
-Play as 4 different characters
-
-
-Story:
+Start with rpg pygame
+Implement Turn Based Strategy
+    Transition during fights to new battle ground where battles are turn based

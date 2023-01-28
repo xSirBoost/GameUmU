@@ -15,6 +15,12 @@ class ui:
             weapon = pygame.image.load(path).convert_alpha()
             self.weapon_graphics.append(weapon)
 
+        self.magic_graphics = []
+        for magic in magic_data.values():
+            magic = pygame.image.load(magic['graphics']).convert_alpha()
+            self.magic_graphics.append(magic)
+
+
     def show_bar(self, current, max_amount, bg_rect, colour):
         pygame.draw.rect(self.display_surface, ui_bg_colour, bg_rect)
 
@@ -34,20 +40,23 @@ class ui:
         pygame.draw.rect(self.display_surface, ui_bg_colour, text_rect.inflate(20,20))
         self.display_surface.blit(text_surf, text_rect)
 
-    def weapon_box(self, left, top, has_switched):
+    def weapon_box(self, left, top):
         bg_rect = pygame.Rect(left, top, item_box_size, item_box_size)
         pygame.draw.rect(self.display_surface,ui_bg_colour,bg_rect)
-        if has_switched:
-            pygame.draw.rect(self.display_surface,ui_border_active_colour,bg_rect, 3)
-        else:
-            pygame.draw.rect(self.display_surface,ui_border_colour,bg_rect, 3)
+        pygame.draw.rect(self.display_surface,ui_border_colour,bg_rect, 3)
         return bg_rect
 
-    def weapon_overlay(self,weapon_index, has_switched):
-        bg_rect = self.weapon_box(10,630,has_switched)
+    def weapon_overlay(self,weapon_index):
+        bg_rect = self.weapon_box(10,630)
         weapon_surf = self.weapon_graphics[weapon_index]
         weapon_rect = weapon_surf.get_rect(center = bg_rect.center)
         self.display_surface.blit(weapon_surf,weapon_rect)
+
+    def magic_overlay(self,magic_index):
+        bg_rect = self.weapon_box(90,630)
+        magic_surf = self.magic_graphics[magic_index]
+        magic_rect = magic_surf.get_rect(center = bg_rect.center)
+        self.display_surface.blit(magic_surf,magic_rect)
 
     def display(self, player):
         self.show_bar(player.health,player.stats['health'], self.health_bar_rect, health_colour)
@@ -55,5 +64,5 @@ class ui:
 
         self.show_exp(player.exp)
 
-        self.weapon_overlay(player.weapon_index,not player.can_switch_weapon)
-        self.weapon_box(90,630)
+        self.weapon_overlay(player.weapon_index)
+        self.magic_overlay(player.magic_index)
